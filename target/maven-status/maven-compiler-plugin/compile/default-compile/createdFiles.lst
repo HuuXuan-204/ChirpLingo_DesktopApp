@@ -1,0 +1,15 @@
+com\chirplingo\domain\base\Fetchable.class
+com\chirplingo\domain\base\BaseEntity.class
+com\chirplingo\domain\User.class
+com\chirplingo\domain\base\Syncable.class
+com\chirplingo\domain\newspaper\Newspaper.class
+com\chirplingo\domain\QuoteOfDay.class
+com\chirplingo\domain\Vocabulary.class
+com\chirplingo\MainApp.class
+com\chirplingo\domain\TodoItem.class
+com\chirplingo\domain\LearnHistory.class
+module-info.class
+com\chirplingo\domain\newspaper\ContentSegment.class
+com\chirplingo\domain\base\Identifiable.class
+com\chirplingo\domain\Podcast.class
+com\chirplingo\domain\WordOfDay.class
