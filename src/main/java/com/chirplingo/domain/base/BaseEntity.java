@@ -9,21 +9,22 @@ public abstract class BaseEntity implements Syncable{
     protected OffsetDateTime updatedAt;
     protected boolean isSynced;
 
+
+    public BaseEntity(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean isSynced) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isSynced = isSynced;
+    }
+
+
     @Override
     public String getId() {
         return this.id;
     };
 
-    protected void setId(String id) {
-        this.id = id;
-    }
-
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
-    }
-
-    protected void setCreatedAt(LocalDateTime time) {
-        this.createdAt = time;
     }
 
     @Override
@@ -31,10 +32,10 @@ public abstract class BaseEntity implements Syncable{
         return this.updatedAt;
     }
 
-    protected void setUpdatedAt(LocalDateTime time) {
-        this.updatedAt = time;
+    protected void triggerUpdate() {
+        this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC);
     }
-
+    
     @Override
     public boolean isSynced() {
         return this.isSynced;
@@ -48,9 +49,5 @@ public abstract class BaseEntity implements Syncable{
     @Override
     public void markAsUnsynced() {
         this.isSynced = false;
-    }
-
-    protected void triggerUpdate() {
-        this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC);
     }
 }
