@@ -1,5 +1,6 @@
 package com.chirplingo.domain;
 
+<<<<<<< HEAD
 import com.chirplingo.domain.base.BaseEntity;
 
 public class User extends BaseEntity {
@@ -40,4 +41,7 @@ public class User extends BaseEntity {
         this.avatar = avatar;
         triggerUpdate();
     }
+=======
+public class User {
+>>>>>>> main
 }
