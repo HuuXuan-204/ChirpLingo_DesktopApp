@@ -23,28 +23,35 @@ public class WordOfDay implements Fetchable {
         this.fetchDate = fetchDate;
     }
 
-    public String getID(){
-        return id;
+    public String getId(){
+        return this.id;
     }
+
     public String getWord(){
-        return word;
+        return this.word;
     }
+
     public String getMeaning(){
-        return meaning;
+        return this.meaning;
     }
+
     public String getType(){
-        return type;
+        return this.type;
     }
+
     public String getExample(){
-        return example;
+        return this.example;
     }
+
     public LocalDate getFetchDate(){
-        return fetchDate;
+        return this.fetchDate;
     }
+
     @Override
     public String getSourceURL(){
-        return sourceURL;
+        return this.sourceURL;
     }
+    
     public boolean isExpired(){
         // kiem tra xem co het han hay chua (vi du: ngay fetch khong phai ngay hom nay)
         return !(LocalDate.now().equals(fetchDate));

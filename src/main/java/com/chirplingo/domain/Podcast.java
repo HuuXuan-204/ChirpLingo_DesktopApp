@@ -10,7 +10,7 @@ public class Podcast implements Fetchable {
     private String channelURL;
 
 
-    public Podcast(String id, String title, String image, String sourceURL, String channelURL){
+    public Podcast(String id, String title, String imageURL, String sourceURL, String channelURL){
         this.id = id;
         this.title = title;
         this.imageURL= imageURL;
@@ -19,16 +19,20 @@ public class Podcast implements Fetchable {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
     public String getTitle(){
-        return title;
+        return this.title;
     }
     public String getImageURL(){
-        return imageURL;
+        return this.imageURL;
     }
     @Override
     public String getSourceURL(){
-        return sourceURL;
+        return this.sourceURL;
+    }
+
+    public String getChannelURL() {
+        return this.channelURL;
     }
 }

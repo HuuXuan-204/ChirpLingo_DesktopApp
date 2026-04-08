@@ -18,23 +18,29 @@ public class QuoteOfDay implements Fetchable{
         this.sourceURL = sourceURL;
         this.fetchDate = fetchDate;
     }
-    public String getID(){
-        return id;
+
+    public String getId(){
+        return this.id;
     }
+
     public String getContent(){
-        return content;
+        return this.content;
     }
+
     public String getAuthor(){
-        return author;
+        return this.author;
     }
+
     public LocalDate getFetchDate(){
-        return fetchDate;
+        return this.fetchDate;
     }
+
     @Override
     public String getSourceURL(){
-        return sourceURL;
+        return this.sourceURL;
     }
+
     public boolean isExpired(){
-        return !LocalDate.now().equal(fetchDate);
+        return !(LocalDate.now().equals(fetchDate));
     }
 }

@@ -13,31 +13,34 @@ public class Newspaper implements Fetchable {
     private OffsetDateTime publishedAt;
     private ArrayList<ContentSegment> segments;
 
-    public Newspaper(String id, String title, String imageURL, publishedAt OffsetDateTime, ArrayList<ContentSegment> segment){
+    public Newspaper(String id, String title, String imageURL, OffsetDateTime publishedAt, ArrayList<ContentSegment> segments){
         this.id = id;
         this.title = title;
         this.imageURL= imageURL;
         this.publishedAt = publishedAt;
-        this.segments = segment;  
+        this.segments = segments;  
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
+
     public String getTitle(){
-        return title;
+        return this.title;
     }
+
     @Override
-    public String SourceURL(){
-        return imageURL;
+    public String getSourceURL() {
+        return this.imageURL;
     }
-    public OffsetDateTime getPublic(){
-        return publishedAt;
+
+    public OffsetDateTime getPublishAt(){
+        return this.publishedAt;
     }
-    public ArrayList<ContentSegment> getSegment(){
-        return segments;
+    public ArrayList<ContentSegment> getSegments(){
+        return this.segments;
     }
-    public String getPreview(){
+    /**public String getPreview(){
         
-    }
+    }*/
 }
