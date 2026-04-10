@@ -1,16 +1,20 @@
 package com.chirplingo.domain;
 
-import java.time.OffsetDateTime;
-
 import com.chirplingo.domain.base.BaseEntity;
+import com.chirplingo.practice.SRSResult;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 public class Vocabulary extends BaseEntity {
-    private String word;
-    private String ipa;
-    private String type;
-    private String meaning;
-    private String example;
-    private String note;
+    private StringProperty word;
+    private StringProperty ipa;
+    private StringProperty type;
+    private StringProperty meaning;
+    private StringProperty example;
+    private StringProperty note;
+
     private String userId;
     private OffsetDateTime nextReviewAt;
     private int interval;
@@ -18,14 +22,17 @@ public class Vocabulary extends BaseEntity {
     private int repetition;
     private OffsetDateTime deletedAt;
 
-    public Vocabulary(String word, String ipa, String type, String meaning, String example, String note, String userId,
-            OffsetDateTime nextReviewAt, int interval, double easeFactor, int repetition, OffsetDateTime deletedAt) {
-        this.word = word;
-        this.ipa = ipa;
-        this.type = type;
-        this.meaning = meaning;
-        this.example = example;
-        this.note = note;
+    public Vocabulary(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean isSynced,
+            String word, String ipa, String type, String meaning,
+            String example, String note, String userId, OffsetDateTime nextReviewAt, int interval,
+            double easeFactor, int repetition, OffsetDateTime deletedAt) {
+        super(id, createdAt, updatedAt, isSynced);
+        this.word = new SimpleStringProperty(word);
+        this.ipa = new SimpleStringProperty(ipa);
+        this.type = new SimpleStringProperty(type);
+        this.meaning = new SimpleStringProperty(meaning);
+        this.example = new SimpleStringProperty(example);
+        this.note = new SimpleStringProperty(note);
         this.userId = userId;
         this.nextReviewAt = nextReviewAt;
         this.interval = interval;
@@ -35,26 +42,80 @@ public class Vocabulary extends BaseEntity {
     }
 
     public String getWord() {
+        return word.get();
+    }
+
+    public void setWord(String word) {
+        this.word.set(word);
+        triggerUpdate();
+    }
+
+    public StringProperty wordProperty() {
         return word;
     }
 
     public String getIpa() {
+        return ipa.get();
+    }
+
+    public void setIpa(String ipa) {
+        this.ipa.set(ipa);
+        triggerUpdate();
+    }
+
+    public StringProperty ipaProperty() {
         return ipa;
     }
 
     public String getType() {
+        return type.get();
+    }
+
+    public void setType(String type) {
+        this.type.set(type);
+        triggerUpdate();
+    }
+
+    public StringProperty typeProperty() {
         return type;
     }
 
     public String getMeaning() {
+        return meaning.get();
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning.set(meaning);
+        triggerUpdate();
+    }
+
+    public StringProperty meaningProperty() {
         return meaning;
     }
 
     public String getExample() {
+        return example.get();
+    }
+
+    public void setExample(String example) {
+        this.example.set(example);
+        triggerUpdate();
+    }
+
+    public StringProperty exampleProperty() {
         return example;
     }
 
     public String getNote() {
+        return note.get();
+    }
+
+    public void setNote(String note) {
+        this.note.set(note);
+        triggerUpdate();
+    }
+
+    public StringProperty noteProperty() {
         return note;
     }
 
@@ -78,67 +139,27 @@ public class Vocabulary extends BaseEntity {
         return repetition;
     }
 
-    public OffsetDateTime getDeleteAt() {
+    public OffsetDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public void setIpa(String ipa) {
-        this.ipa = ipa;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setMeaning(String meaning) {
-        this.meaning = meaning;
-    }
-
-    public void setExample(String example) {
-        this.example = example;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    // quality = 0-5, nếu quality < 3 thì reset, >= 3 thì tăng repetition và tính interval mới
-    public void updateReviewResult(int quality) {
-        if (quality < 3) {
-            this.repetition = 0;
-            this.interval = 1;
-        } else {
-            this.repetition++;
-
-            if (this.repetition == 1) {
-                this.interval = 1;
-            } else if (this.repetition == 2) {
-                this.interval = 6;
-            } else {
-                this.interval = (int) Math.round(this.interval * this.easeFactor);
-            }
-
-            // Update ease factor theo thuật toán SM-2
-            this.easeFactor = Math.max(1.3,
-                    this.easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
-        }
-
-        this.nextReviewAt = OffsetDateTime.now().plusDays(this.interval);
+    public void setSRSInfo(SRSResult result) {
+        this.nextReviewAt = result.getNextReviewAt();
+        this.interval = result.getInterval();
+        this.easeFactor = result.getEaseFactor();
+        this.repetition = result.getRepetition();
+        triggerUpdate();
     }
 
     public boolean isDue() {
-        return this.nextReviewAt == null || !this.nextReviewAt.isAfter(OffsetDateTime.now());
-    };
-
-    public void softDelete() {
-        this.deletedAt = OffsetDateTime.now();
+        if (this.nextReviewAt == null) {
+            return true; 
+        }
+        return nextReviewAt.isBefore(OffsetDateTime.now(ZoneOffset.UTC));
     }
 
-    public boolean isDeleted() {
-        return this.deletedAt != null;
+    public void softDelete() {
+        this.deletedAt = OffsetDateTime.now(ZoneOffset.UTC);
+        triggerUpdate();
     }
 }

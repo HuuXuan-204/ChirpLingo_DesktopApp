@@ -2,7 +2,7 @@ package com.chirplingo.domain.base;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.LocalDateTime;
+
 
 public abstract class BaseEntity implements Syncable{
     protected String id;
@@ -28,25 +28,17 @@ public abstract class BaseEntity implements Syncable{
         return this.createdAt;
     }
 
-<<<<<<< HEAD
-    protected void setCreatedAt(LocalDateTime time) {
-        this.createdAt = time.atOffset(ZoneOffset.UTC);
-    }
 
-=======
->>>>>>> main
+
     @Override
     public OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-<<<<<<< HEAD
-    protected void setUpdatedAt(LocalDateTime time) {
-        this.updatedAt = time.atOffset(ZoneOffset.UTC);
-=======
+
     protected void triggerUpdate() {
         this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC);
->>>>>>> main
+
     }
     
     @Override
