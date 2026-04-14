@@ -1,7 +1,7 @@
 package com.chirplingo.domain.base;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import com.chirplingo.utils.CommonUtils;
 
 
 public abstract class BaseEntity implements Syncable{
@@ -37,7 +37,7 @@ public abstract class BaseEntity implements Syncable{
 
 
     protected void triggerUpdate() {
-        this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC);
+        this.updatedAt = CommonUtils.getOffsetDateTime();
 
     }
     

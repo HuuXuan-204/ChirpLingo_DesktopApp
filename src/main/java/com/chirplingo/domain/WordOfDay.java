@@ -52,8 +52,11 @@ public class WordOfDay implements Fetchable {
         return this.sourceURL;
     }
     
+    /**
+     * Kiểm tra xem data này hết hạn chưa (Để quyết định xem có cần fetch lại không)
+     * @return true nếu fetchDate không phải hôm nay và ngược lại
+    */
     public boolean isExpired(){
-        // kiem tra xem co het han hay chua (vi du: ngay fetch khong phai ngay hom nay)
         return !(LocalDate.now().equals(fetchDate));
     }
     

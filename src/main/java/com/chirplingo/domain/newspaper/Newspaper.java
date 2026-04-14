@@ -1,9 +1,8 @@
 package com.chirplingo.domain.newspaper;
 
-import java.lang.reflect.Array;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-
+import java.util.Comparator;
+import java.util.List;
 import com.chirplingo.domain.base.Fetchable;
 
 public class Newspaper implements Fetchable {
@@ -11,13 +10,16 @@ public class Newspaper implements Fetchable {
     private String title;
     private String imageURL;
     private OffsetDateTime publishedAt;
-    private ArrayList<ContentSegment> segments;
+    private List<ContentSegment> segments;
 
-    public Newspaper(String id, String title, String imageURL, OffsetDateTime publishedAt, ArrayList<ContentSegment> segments){
+    public Newspaper(String id, String title, String imageURL, OffsetDateTime publishedAt, List<ContentSegment> segments){
         this.id = id;
         this.title = title;
         this.imageURL= imageURL;
         this.publishedAt = publishedAt;
+        if (segments != null) {
+            segments.sort(Comparator.comparingInt(ContentSegment::getOrderIndex));
+        }
         this.segments = segments;  
     }
 
@@ -37,10 +39,22 @@ public class Newspaper implements Fetchable {
     public OffsetDateTime getPublishAt(){
         return this.publishedAt;
     }
-    public ArrayList<ContentSegment> getSegments(){
+
+    public List<ContentSegment> getSegments(){
         return this.segments;
     }
-    /**public String getPreview(){
-        
-    }*/
+
+    /**
+     * @return Đoạn nội dung demo của bài báo
+     */
+    public String getPreview(){
+        if (segments == null || segments.isEmpty()) {
+            return "";
+        }
+
+        String content = segments.get(0).getEn();
+        if (content == null) return "";
+
+        return content.length() <= 100 ? content : content.substring(0, 100) + "...";
+    }
 }

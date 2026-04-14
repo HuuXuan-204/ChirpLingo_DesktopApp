@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import com.chirplingo.utils.CommonUtils;
 
 public class TodoItem extends BaseEntity {
     private StringProperty content;
@@ -78,11 +78,11 @@ public class TodoItem extends BaseEntity {
         if (this.deadline == null) {
             return false;
         }
-        return this.deadline.isAfter(OffsetDateTime.now(ZoneOffset.UTC));
+        return this.deadline.isBefore(CommonUtils.getOffsetDateTime());
     }
 
     public void softDelete() {
-        this.deletedAt = OffsetDateTime.now(ZoneOffset.UTC);
+        this.deletedAt = CommonUtils.getOffsetDateTime();
         triggerUpdate();
     }
 }
