@@ -4,14 +4,11 @@ import com.chirplingo.domain.base.BaseEntity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-import java.util.LinkedList;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.IsoFields;
 import java.time.temporal.TemporalAdjusters;
+import com.chirplingo.utils.CommonUtils;
 
 public class LearnHistory extends BaseEntity {
     private IntegerProperty monday;
@@ -37,6 +34,11 @@ public class LearnHistory extends BaseEntity {
         this.streak = new SimpleIntegerProperty(streak);
     }
 
+    /**
+     * Lấy giá trị số từ vựng đã học của ngày tương ứng
+     * @param index Index của ngày (Thứ 2: 0, thứ 3: 1, thứ 4: 2, thứ 5: 3, thứ 6: 4, thứ 7: 5, Chủ nhật: 6)
+     * @return int
+     */
     public int getDayValue(int index) {
         switch (index) {
             case 0:
@@ -54,7 +56,7 @@ public class LearnHistory extends BaseEntity {
             case 6:
                 return this.sunday.get();
             default:
-                throw new IllegalStateException("Unexpected index: " + index);
+                throw new IllegalStateException("Index không hợp lệ: " + index);
         }
     }
 
@@ -75,10 +77,15 @@ public class LearnHistory extends BaseEntity {
             case 6:
                 return this.sunday;
             default:
-                throw new IllegalStateException("Unexpected index: " + index);
+                throw new IllegalStateException("Index không hợp lệ: " + index);
         }
     }
 
+    /**
+     * Ghi đè giá trị số từ vựng đã học của ngày tương ứng
+     * @param index Index của ngày (Thứ 2: 0, thứ 3: 1, thứ 4: 2, thứ 5: 3, thứ 6: 4, thứ 7: 5, Chủ nhật: 6)
+     * @param value Số từ vựng đã học
+     */
     private void setDayValue(int index, int value) {
         switch (index) {
             case 0:
@@ -103,10 +110,14 @@ public class LearnHistory extends BaseEntity {
                 this.sunday.set(value);
                 break;
             default:
-                throw new IllegalStateException("Unexpected index: " + index);
+                throw new IllegalStateException("Index không hợp lệ: " + index);
         }
     }
 
+    /**
+     * Lấy chuỗi ngày liên tiếp đã học từ vựng
+     * @return int
+     */
     public int getStreak() {
         return this.streak.get();
     }
@@ -115,78 +126,71 @@ public class LearnHistory extends BaseEntity {
         return this.streak;
     }
 
+    /**
+     * Cập nhật số từ vựng và streak
+     * @param addedValue Số từ vựng đã học
+     */
     public void updateToday(int addedValue) {
-        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-        
-        
-        boolean needUpdate = refreshDayValues(now);
-        
-        if (addedValue > 0) refreshStreak(now);
+        if (this.updatedAt == null) {
+            if (addedValue > 0) {
+                int todayIndex = CommonUtils.getOffsetDateTime().getDayOfWeek().getValue() - 1;
+                setDayValue(todayIndex, addedValue);
+                this.streak.set(1);
+                triggerUpdate();
+            }
+            return;
+        }
 
+        OffsetDateTime now = CommonUtils.getOffsetDateTime();
+        LocalDate nowDate = now.toLocalDate();
+        LocalDate lastUpdate = this.updatedAt.toLocalDate();
         int todayIndex = now.getDayOfWeek().getValue() - 1;
-        int currentValue = getDayValue(todayIndex);
-        setDayValue(todayIndex, currentValue + addedValue);
-        if (needUpdate || addedValue > 0)
-        triggerUpdate();
 
-    }
+        boolean hasUpdate = false;
 
-    private boolean refreshDayValues(OffsetDateTime now) {
-        LinkedList<Integer> oldDayValue = new LinkedList<>();
+        // Reset dayValue cũ
+        if (!nowDate.isEqual(lastUpdate)) {
+            LocalDate thisWeek = nowDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate lastWeek = thisWeek.minusWeeks(1);
 
-        for (int i = 0; i < 7; i++) {
-            oldDayValue.add(getDayValue(i));
-        }
-
-        OffsetDateTime nowDate = now;
-        OffsetDateTime lastUpdateDate = this.updatedAt;
-
-        if (!nowDate.toLocalDate().isEqual(lastUpdateDate.toLocalDate())) {
-            // Tìm ngày thứ Hai của tuần hiện tại và thứ Hai của tuần trước
-            LocalDate startOfCurrentWeek = nowDate.toLocalDate()
-                    .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-            LocalDate startOfLastWeek = startOfCurrentWeek.minusWeeks(1);
-
-            int todayIndex = nowDate.getDayOfWeek().getValue() - 1;
             for (int i = 0; i < 7; i++) {
+                boolean shouldReset = false;
                 if (i == todayIndex) {
-                    setDayValue(i, 0);
+                    shouldReset = true; 
                 } else if (i < todayIndex) {
-                    // Các ngày trước hôm nay: Nếu lần cập nhật cuối là trước tuần này -> Reset về 0
-                    if (lastUpdateDate.toLocalDate().isBefore(startOfCurrentWeek)) {
-                        setDayValue(i, 0);
-                    }
+                    shouldReset = lastUpdate.isBefore(thisWeek);
                 } else {
-                    // Nếu lần cập nhật cuối là trước tuần trước nữa (Nghỉ > 2 tuần) -> Reset về 0
-                    if (lastUpdateDate.toLocalDate().isBefore(startOfLastWeek)) {
-                        setDayValue(i, 0);
-                    }
+                    shouldReset = lastUpdate.isBefore(lastWeek);
                 }
-            }
-            for (int i = 0; i < 7; i++) {
-                if (getDayValue(i) != oldDayValue.get(i)) {
-                    return true;
+
+                if (shouldReset) {
+                    setDayValue(i, 0);
+                    hasUpdate = true;
                 }
             }
         }
-        return false;
-    }
 
-    private void refreshStreak(OffsetDateTime now) {
-        if (this.updatedAt != null) {
-            OffsetDateTime nowDate = now;
-            OffsetDateTime lastUpdateDate = this.updatedAt;
+        // Tính Streak
+        boolean isFirstLessonToday = (getDayValue(todayIndex) == 0 && addedValue > 0);
+        if (isFirstLessonToday) {
+            int yesterdayIndex = (todayIndex + 6) % 7;
 
-            long daysBetween = ChronoUnit.DAYS.between(lastUpdateDate.toLocalDate(), nowDate.toLocalDate());
-
-            if (daysBetween == 1) {
+            if (getDayValue(yesterdayIndex) > 0) {
                 this.streak.set(this.streak.get() + 1);
-            } else if (daysBetween > 1) {
+            } else {
                 this.streak.set(1);
             }
-        } else {
-            this.streak.set(0);
+            hasUpdate = true;
         }
 
+        if (addedValue > 0) {
+            setDayValue(todayIndex, getDayValue(todayIndex) + addedValue);
+            hasUpdate = true;
+        }
+
+        if (hasUpdate) {
+            triggerUpdate();
+        }
     }
+
 }

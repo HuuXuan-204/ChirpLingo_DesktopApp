@@ -1,7 +1,7 @@
 package com.chirplingo.domain;
 
 import com.chirplingo.domain.base.BaseEntity;
-import com.chirplingo.practice.SRSResult;
+import com.chirplingo.practice.entities.SRSResult;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.time.OffsetDateTime;

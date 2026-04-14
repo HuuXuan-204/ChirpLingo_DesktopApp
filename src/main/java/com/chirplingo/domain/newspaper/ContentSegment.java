@@ -4,6 +4,7 @@ public class ContentSegment {
     private String en;
     private String vn;
     private int  orderIndex;
+
     public ContentSegment(String en, String vn, int orderIndex) {
         this.en = en;
         this.vn = vn;
@@ -11,12 +12,14 @@ public class ContentSegment {
     }
 
     public String getEn(){
-        return en;
+        return this.en;
     }
+
     public String getVn(){
-        return vn;
+        return this.vn;
     }
+    
     public int getOrderIndex(){
-        return orderIndex;
+        return this.orderIndex;
     }
 }
