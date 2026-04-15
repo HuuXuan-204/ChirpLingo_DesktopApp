@@ -1,21 +1,37 @@
 package com.chirplingo.domain;
 
+import java.time.OffsetDateTime;
+
 import com.chirplingo.domain.base.Fetchable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Podcast implements Fetchable {
+    
+    @JsonProperty("id")
     private String id;
+    
+    @JsonProperty("title")
     private String title;
-    private String imageURL;
-    private String sourceURL;
-    private String channelURL;
+    
+    @JsonProperty("image_url")
+    private String imageUrl;
+    
+    @JsonProperty("source_url")
+    private String sourceUrl;
+    
+    @JsonProperty("published_at")
+    private OffsetDateTime publishedAt;
 
+    public Podcast() {
+    }
 
-    public Podcast(String id, String title, String imageURL, String sourceURL, String channelURL){
+    public Podcast(String id, String title, String imageUrl, String sourceUrl, OffsetDateTime publishedAt){
         this.id = id;
         this.title = title;
-        this.imageURL= imageURL;
-        this.sourceURL = sourceURL;
-        this.channelURL = channelURL;
+        this.imageUrl= imageUrl;
+        this.sourceUrl = sourceUrl;
+        this.publishedAt = publishedAt;
     }
 
     public String getId() {
@@ -24,15 +40,15 @@ public class Podcast implements Fetchable {
     public String getTitle(){
         return this.title;
     }
-    public String getImageURL(){
-        return this.imageURL;
+    public String getImageUrl(){
+        return this.imageUrl;
     }
     @Override
-    public String getSourceURL(){
-        return this.sourceURL;
+    public String getSourceUrl(){
+        return this.sourceUrl;
     }
 
-    public String getChannelURL() {
-        return this.channelURL;
+    public OffsetDateTime getPublishedAt() {
+        return this.publishedAt;
     }
 }

@@ -5,17 +5,29 @@ import java.util.Comparator;
 import java.util.List;
 import com.chirplingo.domain.base.Fetchable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Newspaper implements Fetchable {
+    
+    @JsonProperty("id")
     private String id;
+    
+    @JsonProperty("title")
     private String title;
-    private String imageURL;
+    
+    @JsonProperty("image_url")
+    private String imageUrl;
+    
+    @JsonProperty("published_at")
     private OffsetDateTime publishedAt;
+    
+    @JsonProperty("segments")
     private List<ContentSegment> segments;
 
-    public Newspaper(String id, String title, String imageURL, OffsetDateTime publishedAt, List<ContentSegment> segments){
+    public Newspaper(String id, String title, String imageUrl, OffsetDateTime publishedAt, List<ContentSegment> segments){
         this.id = id;
         this.title = title;
-        this.imageURL= imageURL;
+        this.imageUrl= imageUrl;
         this.publishedAt = publishedAt;
         if (segments != null) {
             segments.sort(Comparator.comparingInt(ContentSegment::getOrderIndex));
@@ -32,8 +44,8 @@ public class Newspaper implements Fetchable {
     }
 
     @Override
-    public String getSourceURL() {
-        return this.imageURL;
+    public String getSourceUrl() {
+        return this.imageUrl;
     }
 
     public OffsetDateTime getPublishAt(){

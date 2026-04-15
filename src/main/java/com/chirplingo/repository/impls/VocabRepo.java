@@ -53,8 +53,8 @@ public class VocabRepo extends BaseRepository<Vocabulary> implements VocabReposi
     protected Vocabulary mapRow(ResultSet rs) {
         try {
             String id = rs.getString("id");
-            OffsetDateTime createdAt = rs.getString("created_at") != null ? OffsetDateTime.parse(rs.getString("created_at")) : null;
-            OffsetDateTime updatedAt = rs.getString("updated_at") != null ? OffsetDateTime.parse(rs.getString("updated_at")) : null;
+            OffsetDateTime createdAt = CommonUtils.parseDateTime(rs.getString("created_at"));
+            OffsetDateTime updatedAt = CommonUtils.parseDateTime(rs.getString("updated_at"));
             boolean isSynced = rs.getInt("is_synced") == 1;
             String word = rs.getString("word");
             String meaning = rs.getString("meaning");
@@ -65,9 +65,9 @@ public class VocabRepo extends BaseRepository<Vocabulary> implements VocabReposi
             int repetition = rs.getInt("repetition");
             int interval = rs.getInt("interval");
             double easeFactor = rs.getDouble("ease_factor");
-            OffsetDateTime nextReviewAt = rs.getString("next_review_at") != null ? OffsetDateTime.parse(rs.getString("next_review_at")) : null;
+            OffsetDateTime nextReviewAt = CommonUtils.parseDateTime(rs.getString("next_review_at"));
             String userId = rs.getString("user_id");
-            OffsetDateTime deletedAt = rs.getString("deleted_at") != null ? OffsetDateTime.parse(rs.getString("deleted_at")) : null;
+            OffsetDateTime deletedAt = CommonUtils.parseDateTime(rs.getString("deleted_at"));
 
             Vocabulary vocab = new Vocabulary(id, createdAt, updatedAt, isSynced, word, ipa, type, meaning, example, note, userId, nextReviewAt, interval, easeFactor, repetition, deletedAt);
             return vocab;

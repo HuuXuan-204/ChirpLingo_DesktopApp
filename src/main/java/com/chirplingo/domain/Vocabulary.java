@@ -7,6 +7,8 @@ import javafx.beans.property.StringProperty;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Vocabulary extends BaseEntity {
     private StringProperty word;
     private StringProperty ipa;
@@ -15,12 +17,33 @@ public class Vocabulary extends BaseEntity {
     private StringProperty example;
     private StringProperty note;
 
+    @JsonProperty("user_id")
     private String userId;
+    
+    @JsonProperty("next_review_at")
     private OffsetDateTime nextReviewAt;
+    
+    @JsonProperty("interval_days")
     private int interval;
+    
+    @JsonProperty("ease_factor")
     private double easeFactor;
+    
+    @JsonProperty("repetitions")
     private int repetition;
+    
+    @JsonProperty("deleted_at")
     private OffsetDateTime deletedAt;
+
+    public Vocabulary() {
+        super();
+        this.word = new SimpleStringProperty();
+        this.ipa = new SimpleStringProperty();
+        this.type = new SimpleStringProperty();
+        this.meaning = new SimpleStringProperty();
+        this.example = new SimpleStringProperty();
+        this.note = new SimpleStringProperty();
+    }
 
     public Vocabulary(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean isSynced,
             String word, String ipa, String type, String meaning,

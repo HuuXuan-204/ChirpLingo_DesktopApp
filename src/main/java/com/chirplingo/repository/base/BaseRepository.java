@@ -299,10 +299,12 @@ public abstract class BaseRepository<T> implements Repository<T> {
     protected abstract String getUpsertSql();
     protected abstract String getSelectSql();
     protected abstract Object[] getUpsertParams(T entity);
+    
     protected String getUserId() {
         String id = UserSession.getInstance().getUserId();
         if (id == null) {
-            throw new RuntimeException("Chưa đăng nhập bạn ơi!");
+            System.err.println("Cảnh báo: Truy cập Repository [" + tableName + "] khi chưa đăng nhập.");
+            return null;
         }
         return id;
     }

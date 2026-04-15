@@ -1,13 +1,29 @@
 package com.chirplingo.domain;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DictionaryEntry {
+    @JsonProperty("word")
     private String word;
+
+    @JsonProperty("meaning")
     private String meaning;
+
+    @JsonProperty("type")
     private String type;
+
+    @JsonProperty("example")
     private String example;
+
+    @JsonProperty("synonyms")
     private List<String> synonyms;
+    
+    @JsonProperty("antonyms")
     private List<String> antonyms;
+
+    public DictionaryEntry() {
+    }
 
     public DictionaryEntry(String word, String meaning, String type, String example, List<String> synonyms, List<String> antonyms){
         this.word = word;

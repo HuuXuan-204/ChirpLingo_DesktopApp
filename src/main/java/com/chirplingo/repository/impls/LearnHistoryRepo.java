@@ -6,6 +6,7 @@ import com.chirplingo.repository.base.BaseRepository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
+import com.chirplingo.utils.CommonUtils;
 
 public class LearnHistoryRepo extends BaseRepository<LearnHistory> implements LearnHistoryRepository {
     public LearnHistoryRepo() {
@@ -16,8 +17,8 @@ public class LearnHistoryRepo extends BaseRepository<LearnHistory> implements Le
     protected LearnHistory mapRow(ResultSet rs) {
         try {
             String id = rs.getString("id");
-            OffsetDateTime createdAt = rs.getString("created_at") != null ? OffsetDateTime.parse(rs.getString("created_at")) : null;
-            OffsetDateTime updatedAt = rs.getString("updated_at") != null ? OffsetDateTime.parse(rs.getString("updated_at")) : null;
+            OffsetDateTime createdAt = CommonUtils.parseDateTime(rs.getString("created_at"));
+            OffsetDateTime updatedAt = CommonUtils.parseDateTime(rs.getString("updated_at"));
             boolean isSynced = rs.getInt("is_synced") == 1;
             int monday = rs.getInt("monday");
             int tuesday = rs.getInt("tuesday");

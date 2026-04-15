@@ -2,10 +2,20 @@ package com.chirplingo.domain;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CacheData {
+    @JsonProperty("key")
     private String key;
+
+    @JsonProperty("value")
     private String value;
+    
+    @JsonProperty("updated_at")
     private LocalDate updatedAt;
+
+    public CacheData() {
+    }
 
     public CacheData(String key, String value, LocalDate updatedAt){
         this.key = key;

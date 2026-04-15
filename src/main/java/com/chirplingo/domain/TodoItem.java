@@ -8,6 +8,7 @@ import javafx.beans.property.StringProperty;
 
 import java.time.OffsetDateTime;
 import com.chirplingo.utils.CommonUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TodoItem extends BaseEntity {
     private StringProperty content;
@@ -15,6 +16,12 @@ public class TodoItem extends BaseEntity {
     private OffsetDateTime deadline;
     private String userId;
     private OffsetDateTime deletedAt;
+
+    public TodoItem() {
+        super();
+        this.content = new SimpleStringProperty();
+        this.isFinished = new SimpleBooleanProperty();
+    }
 
     public TodoItem(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean isSynced,
             String content, boolean isFinished, OffsetDateTime deadline, String userId,
@@ -40,8 +47,14 @@ public class TodoItem extends BaseEntity {
         return content;
     }
 
+    @JsonProperty("is_finished")
     public boolean isFinished() {
         return isFinished.get();
+    }
+
+    @JsonProperty("is_finished")
+    public void setFinished(boolean finished) {
+        this.isFinished.set(finished);
     }
 
     public BooleanProperty isFinishedProperty() {
@@ -56,8 +69,16 @@ public class TodoItem extends BaseEntity {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public OffsetDateTime getDeletedAt() {
         return deletedAt;
+    }
+
+    public void setDeletedAt(OffsetDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public boolean isDeleted() {

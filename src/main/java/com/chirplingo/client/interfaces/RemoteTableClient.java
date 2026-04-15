@@ -1,5 +1,6 @@
 package com.chirplingo.client.interfaces;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface RemoteTableClient<T> {
@@ -14,5 +15,5 @@ public interface RemoteTableClient<T> {
      * Lấy dữ liệu mới từ trên server 
      * @return Danh sách dữ liệu mới
      */
-    public List<T> pullChanges();
+    public List<T> pullChanges(OffsetDateTime lastSyncTime);
 }
