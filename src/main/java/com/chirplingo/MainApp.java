@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import com.chirplingo.utils.Config;
 
 public class MainApp extends Application {
 
@@ -23,6 +24,8 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
+        Config.load();
+
         launch(args);
     }
 }

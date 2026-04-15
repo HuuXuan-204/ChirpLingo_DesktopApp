@@ -66,14 +66,14 @@ public class TodoRepo extends BaseRepository<TodoItem> implements TodoRepository
     protected TodoItem mapRow(ResultSet rs) {
         try {
             String id = rs.getString("id");
-            OffsetDateTime createdAt = rs.getString("created_at") != null ? OffsetDateTime.parse(rs.getString("created_at")) : null;
-            OffsetDateTime updatedAt = rs.getString("updated_at") != null ? OffsetDateTime.parse(rs.getString("updated_at")) : null;
+            OffsetDateTime createdAt = CommonUtils.parseDateTime(rs.getString("created_at"));
+            OffsetDateTime updatedAt = CommonUtils.parseDateTime(rs.getString("updated_at"));
             boolean isSynced = rs.getInt("is_synced") == 1;
             String content = rs.getString("content");
             boolean isFinished = rs.getInt("is_finished") == 1;
-            OffsetDateTime deadline = rs.getString("deadline") != null ? OffsetDateTime.parse(rs.getString("deadline")) : null;
+            OffsetDateTime deadline = CommonUtils.parseDateTime(rs.getString("deadline"));
             String userId = rs.getString("user_id");
-            OffsetDateTime deletedAt = rs.getString("deleted_at") != null ? OffsetDateTime.parse(rs.getString("deleted_at")) : null;
+            OffsetDateTime deletedAt = CommonUtils.parseDateTime(rs.getString("deleted_at"));
 
             return new TodoItem(id, createdAt, updatedAt, isSynced, content, isFinished, deadline, userId, deletedAt);
         } catch (SQLException e) {

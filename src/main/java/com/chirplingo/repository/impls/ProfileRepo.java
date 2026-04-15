@@ -6,6 +6,7 @@ import com.chirplingo.repository.interfaces.ProfileRepository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
+import com.chirplingo.utils.CommonUtils;
 
 public class ProfileRepo extends BaseRepository<User> implements ProfileRepository {
     public ProfileRepo() {
@@ -15,8 +16,8 @@ public class ProfileRepo extends BaseRepository<User> implements ProfileReposito
     protected User mapRow(ResultSet rs) {
         try {
             String id = rs.getString("id");
-            OffsetDateTime createdAt = rs.getString("created_at") != null ? OffsetDateTime.parse(rs.getString("created_at")) : null;
-            OffsetDateTime updatedAt = rs.getString("updated_at") != null ? OffsetDateTime.parse(rs.getString("updated_at")) : null;
+            OffsetDateTime createdAt = CommonUtils.parseDateTime(rs.getString("created_at"));
+            OffsetDateTime updatedAt = CommonUtils.parseDateTime(rs.getString("updated_at"));
             boolean isSynced = rs.getInt("is_synced") == 1;
             String email = rs.getString("email");
             String userName = rs.getString("user_name");

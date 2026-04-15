@@ -9,7 +9,11 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.temporal.TemporalAdjusters;
 import com.chirplingo.utils.CommonUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties({"created_at", "createdAt"})
 public class LearnHistory extends BaseEntity {
     private IntegerProperty monday;
     private IntegerProperty tuesday;
@@ -19,6 +23,18 @@ public class LearnHistory extends BaseEntity {
     private IntegerProperty saturday;
     private IntegerProperty sunday;
     private IntegerProperty streak;
+
+    public LearnHistory() {
+        super();
+        this.monday = new SimpleIntegerProperty();
+        this.tuesday = new SimpleIntegerProperty();
+        this.wednesday = new SimpleIntegerProperty();
+        this.thursday = new SimpleIntegerProperty();
+        this.friday = new SimpleIntegerProperty();
+        this.saturday = new SimpleIntegerProperty();
+        this.sunday = new SimpleIntegerProperty();
+        this.streak = new SimpleIntegerProperty();
+    }
 
     public LearnHistory(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt,
             boolean isSynced, int monday, int tuesday, int wednesday,
@@ -33,6 +49,45 @@ public class LearnHistory extends BaseEntity {
         this.sunday = new SimpleIntegerProperty(sunday);
         this.streak = new SimpleIntegerProperty(streak);
     }
+
+    @JsonProperty("user_id")
+    public String getUserId() {
+        return this.getId();
+    }
+
+    @JsonProperty("user_id")
+    public void setUserId(String userId) {
+        this.id = userId;
+    }
+
+    @Override
+    @JsonIgnore
+    public OffsetDateTime getCreatedAt() {
+        return super.getCreatedAt();
+    }
+
+    public int getMonday() { return monday.get(); }
+    public void setMonday(int value) { this.monday.set(value); }
+
+    public int getTuesday() { return tuesday.get(); }
+    public void setTuesday(int value) { this.tuesday.set(value); }
+
+    public int getWednesday() { return wednesday.get(); }
+    public void setWednesday(int value) { this.wednesday.set(value); }
+
+    public int getThursday() { return thursday.get(); }
+    public void setThursday(int value) { this.thursday.set(value); }
+
+    public int getFriday() { return friday.get(); }
+    public void setFriday(int value) { this.friday.set(value); }
+
+    public int getSaturday() { return saturday.get(); }
+    public void setSaturday(int value) { this.saturday.set(value); }
+
+    public int getSunday() { return sunday.get(); }
+    public void setSunday(int value) { this.sunday.set(value); }
+
+    public void setStreak(int value) { this.streak.set(value); }
 
     /**
      * Lấy giá trị số từ vựng đã học của ngày tương ứng

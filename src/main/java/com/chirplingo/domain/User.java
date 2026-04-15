@@ -10,6 +10,13 @@ public class User extends BaseEntity {
     private StringProperty userName;
     private StringProperty avatar;
 
+    public User() {
+        super();
+        this.email = new SimpleStringProperty();
+        this.userName = new SimpleStringProperty();
+        this.avatar = new SimpleStringProperty();
+    }
+
     public User(String id, OffsetDateTime createdAt, OffsetDateTime updatedAt, boolean isSynced, 
                 String email, String userName, String avatar) {
         super(id, createdAt, updatedAt, isSynced);
