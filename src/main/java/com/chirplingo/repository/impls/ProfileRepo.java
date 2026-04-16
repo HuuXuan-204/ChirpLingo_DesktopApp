@@ -57,4 +57,8 @@ public class ProfileRepo extends BaseRepository<User> implements ProfileReposito
         };
     }
 
+    @Override
+    protected String getUserIdColumn() {
+        return "id";
+    }
 }

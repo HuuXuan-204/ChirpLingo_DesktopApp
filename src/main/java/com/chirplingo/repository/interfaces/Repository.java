@@ -7,14 +7,14 @@ public interface Repository<T> {
      * @param entity Entity cần lưu
      * @return true nếu lưu thành công, false nếu thất bại
      */
-    public void save(T entity);
+    public boolean save(T entity);
 
     /**----------------------------------------------------------------------
      * Lưu nhiều entity
      * @param entities List các entity cần lưu
      * @return true nếu lưu thành công, false nếu thất bại
      */
-    public void saveMulti(List<T> entities);
+    public boolean saveMulti(List<T> entities);
 
     /**----------------------------------------------------------------------
      * Lấy entity đầu tiên trong DB
@@ -39,26 +39,26 @@ public interface Repository<T> {
      * @param id ID của entity cần xóa
      * @return true nếu xóa thành công, false nếu thất bại
      */
-    public void softDelete(String id);
+    public boolean softDelete(String id);
 
     /**----------------------------------------------------------------------
      * Xóa mềm nhiều entity
      * @param ids List ID của các entity cần xóa
      * @return true nếu xóa thành công, false nếu thất bại
      */
-    public void softDeleteMulti(List<String> ids);
+    public boolean softDeleteMulti(List<String> ids);
 
     /**----------------------------------------------------------------------
      * Xóa cứng nhiều entity (Xóa hẳn khỏi local DB)
      * @param ids List ID của các entity cần xóa
      * @return true nếu xóa thành công, false nếu thất bại
      */
-    public void hardDeleteMulti(List<String> ids);
+    public boolean hardDeleteMulti(List<String> ids);
 
     /**----------------------------------------------------------------------
      * Đánh dấu entity đã được đồng bộ với Cloud
      * @param ids List ID của các entity cần đánh dấu
      * @return true nếu đánh dấu thành công, false nếu thất bại
      */
-    public void markSynced(List<String> ids);
+    public boolean markSynced(List<String> ids);
 }

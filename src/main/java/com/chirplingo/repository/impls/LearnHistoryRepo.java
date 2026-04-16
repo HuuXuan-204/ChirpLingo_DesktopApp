@@ -75,5 +75,10 @@ public class LearnHistoryRepo extends BaseRepository<LearnHistory> implements Le
             entity.isSynced() ? 1 : 0
         };
     }
+
+    @Override
+    protected String getUserIdColumn() {
+        return "id";
+    }
 }
 

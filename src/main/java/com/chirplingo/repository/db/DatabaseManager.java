@@ -1,5 +1,7 @@
 package com.chirplingo.repository.db;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.sql.Connection;
@@ -130,6 +132,20 @@ public class DatabaseManager {
 
     public void executeWrite(Runnable task) {
         executor.execute(task);
+    }
+
+    /**
+     * Gửi tác vụ ghi vào hàng đợi và CHỜ kết quả trả về.
+     * Dùng cho các thao tác write cần biết kết quả (boolean) để Service xử lý tiếp.
+     * Vẫn đảm bảo chỉ 1 luồng ghi tại một thời điểm.
+     */
+    public <T> T executeWriteWithResult(Callable<T> task) {
+        try {
+            return executor.submit(task).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void closeDB() {
