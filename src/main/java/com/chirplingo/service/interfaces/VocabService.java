@@ -1,5 +1,6 @@
 package com.chirplingo.service.interfaces;
 
-public class VocabService {
+public interface VocabService {
+
     
 }
