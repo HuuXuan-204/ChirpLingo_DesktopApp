@@ -63,4 +63,8 @@ public class User extends BaseEntity {
     public StringProperty avatarProperty() {
         return avatar;
     }
+
+    public OffsetDateTime getDeletedAt() {
+        return null;
+    }
 }

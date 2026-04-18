@@ -29,7 +29,7 @@ public class VocabRepo extends BaseRepository<Vocabulary> implements VocabReposi
     public int countDue() {
         String userId = getUserId();
         if(userId == null) return 0;
-        String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE user_id = ? AND deleted_at IS NULL AND next_review_at <= ?";
+        String sql = "SELECT COUNT(id) FROM " + tableName + " WHERE user_id = ? AND deleted_at IS NULL AND next_review_at <= ?";
         OffsetDateTime now = CommonUtils.getOffsetDateTime();
         return queryCount(sql, userId, now.toString());
     }

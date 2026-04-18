@@ -11,4 +11,12 @@ public interface SyncMetaDataRepository {
      */
     public OffsetDateTime getLastSyncTime(String tableName);
 
+    /**
+     * Lưu thời gian sync cuối cùng của 1 bảng
+     * @param tableName Tên bảng
+     * @param lastSyncTime Thời gian sync cuối cùng
+     * @return true nếu lưu thành công, false nếu lưu thất bại
+     */
+    public boolean saveLastSyncTime(String tableName, OffsetDateTime lastSyncTime);
+
 }

@@ -27,6 +27,14 @@ public class SyncMetaDataRepo extends BaseRepository<SyncMetaData> implements Sy
         return syncMetaData.getLastSyncTime();
     }
 
+    public boolean saveLastSyncTime(String table, OffsetDateTime lastSyncTime) {
+        String userId = getUserId();
+        if(userId == null) return false;
+
+        SyncMetaData syncMetaData = new SyncMetaData(userId, table, lastSyncTime);
+        return save(syncMetaData);
+    }
+
     @Override
     protected SyncMetaData mapRow(ResultSet rs) {
         try {

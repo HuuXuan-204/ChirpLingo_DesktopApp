@@ -13,11 +13,12 @@ public abstract class BaseSupabaseClient {
 
     protected HttpRequest.Builder createRequest(String endpoint) {
         String url = context.getUrl() + endpoint;
+        String token = context.getAccessToken() != null ? context.getAccessToken() : context.getAnonKey();
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(15))
-                .header("apikey", context.getKey())
-                .header("Authorization", "Bearer " + context.getKey())
+                .header("apikey", context.getAnonKey())
+                .header("Authorization", "Bearer " + token)
                 .header("Content-Type", "application/json");
     }
 }
