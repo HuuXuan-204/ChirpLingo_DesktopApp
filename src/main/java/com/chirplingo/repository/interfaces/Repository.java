@@ -56,6 +56,13 @@ public interface Repository<T> {
     public boolean hardDeleteMulti(List<String> ids);
 
     /**----------------------------------------------------------------------
+     * Lấy danh sách entity theo danh sách ID
+     * @param ids Danh sách ID cần tìm
+     * @return List các entity tìm được
+     */
+    public List<T> findByIds(List<String> ids);
+
+    /**----------------------------------------------------------------------
      * Đánh dấu entity đã được đồng bộ với Cloud
      * @param ids List ID của các entity cần đánh dấu
      * @return true nếu đánh dấu thành công, false nếu thất bại

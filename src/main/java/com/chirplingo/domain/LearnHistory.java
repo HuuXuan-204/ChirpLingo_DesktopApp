@@ -66,6 +66,10 @@ public class LearnHistory extends BaseEntity {
         return super.getCreatedAt();
     }
 
+    public OffsetDateTime getDeletedAt() {
+        return null;
+    }
+
     public int getMonday() { return monday.get(); }
     public void setMonday(int value) { this.monday.set(value); }
 

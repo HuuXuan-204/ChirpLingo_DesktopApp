@@ -8,6 +8,8 @@ module com.chirplingo {
     requires com.fasterxml.jackson.datatype.jsr310;
     requires com.fasterxml.jackson.annotation;
     requires io.github.cdimascio.dotenv.java;
+    requires com.sun.jna;
+    requires com.sun.jna.platform;
 
     opens com.chirplingo to javafx.fxml;
     opens com.chirplingo.domain to javafx.fxml;
@@ -18,4 +20,5 @@ module com.chirplingo {
     exports com.chirplingo.client.base;
     exports com.chirplingo.practice.entities;
     exports com.chirplingo.utils;
+    exports com.chirplingo.auth;
 }

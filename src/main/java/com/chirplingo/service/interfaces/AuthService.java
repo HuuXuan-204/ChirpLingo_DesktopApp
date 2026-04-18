@@ -1,34 +1,30 @@
 package com.chirplingo.service.interfaces;
 
+import com.chirplingo.domain.Result;
+
 public interface AuthService {
     /**
      * Đăng nhập vào ứng dụng, nhận về Access Token va Resfresh Token cùng thông tin người dùng
      * @param email Email của người dùng
      * @param password Mật khẩu của người dùng
-     * @return true nếu đăng nhập thành công, false nếu đăng nhập thất bại
+     * @return Result success với message nếu đăng nhập thành công, Result fail với message và error code nếu đăng nhập thất bại
      */
-    public boolean login(String email, String password);
+    public Result login(String email, String password);
 
     /**
      * Đăng ký tài khoản mới
      * @param email Email của người dùng
      * @param password Mật khẩu của người dùng
      * @param userName Tên người dùng
-     * @return true nếu đăng ký thành công, false nếu đăng ký thất bại
+     * @return Result success với message nếu đăng ký thành công, Result fail với message và error code nếu đăng ký thất bại
      */
-    public boolean register(String email, String password, String userName);
+    public Result register(String email, String password, String userName);
 
     /**
      * Đăng xuất khỏi ứng dụng (Xóa hết Token trong bộ nhớ)
      * @return true nếu đăng xuất thành công, false nếu đăng xuất thất bại
      */
     public boolean logout();
-
-    /**
-     * Làm mới phiên đăng nhập (Dùng refresh token để lấy access token mới để tiếp tục duy trì đăng nhập)
-     * @return true nếu làm mới phiên thành công, false nếu làm mới phiên thất bại
-     */
-    public boolean refreshSession();
 
     /**
      * Thử đăng nhập tự động, dùng khi mở app để tự động đăng nhập nếu còn refresh token)
@@ -40,13 +36,13 @@ public interface AuthService {
      * Thay đổi email (Nhận link về email mới và cũ để bấm xác nhận)
      * @param newEmail Email mới
      */
-    public void changeEmail(String newEmail);
+    public Result changeEmail(String newEmail);
 
     /**
      * Quên mật khẩu (Nhận link về email để chuyển sang trang đổi mật khẩu)
      * @param email Email của người dùng
      */
-    public void resetPassword(String email);
+    public Result resetPassword(String email);
 
     /**
      * Kiểm tra xem người dùng đã đăng nhập hay chưa

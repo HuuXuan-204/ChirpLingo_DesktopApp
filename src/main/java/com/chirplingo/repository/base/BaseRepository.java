@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.util.stream.Collectors;
 
 public abstract class BaseRepository<T> implements Repository<T> {
     protected DatabaseManager dbManager;
@@ -101,14 +102,16 @@ public abstract class BaseRepository<T> implements Repository<T> {
         String userId = getUserId();
         if (ids == null || ids.isEmpty() || userId == null) return false;
         String sql = "UPDATE " + tableName + " SET deleted_at = ? WHERE " + getUserIdColumn() + " = ? AND id = ?";
+        String now = CommonUtils.getOffsetDateTime().toString();
 
         Boolean result = dbManager.executeWriteWithResult(() -> {
             try (Connection conn = dbManager.getConnection()) {
                 conn.setAutoCommit(false);
 
+
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     for (String id : ids) {
-                        st.setObject(1, CommonUtils.getOffsetDateTime().toString());
+                        st.setObject(1, now);
                         st.setObject(2, userId);
                         st.setObject(3, id);
                         st.addBatch();
@@ -168,6 +171,25 @@ public abstract class BaseRepository<T> implements Repository<T> {
         });
 
         return result != null && result;
+    }
+
+    @Override
+    public List<T> findByIds(List<String> ids) {
+        String userId = getUserId();
+        if (ids == null || ids.isEmpty() || userId == null) return new ArrayList<>();
+
+        String placeholders = ids.stream().map(id -> "?").collect(Collectors.joining(", "));
+        String sql = "SELECT * FROM " + tableName
+                + " WHERE " + getUserIdColumn() + " = ?"
+                + " AND id IN (" + placeholders + ")";
+
+        Object[] params = new Object[ids.size() + 1];
+        params[0] = userId;
+        for (int i = 0; i < ids.size(); i++) {
+            params[i + 1] = ids.get(i);
+        }
+
+        return queryList(sql, params);
     }
 
     @Override

@@ -39,12 +39,17 @@ public abstract class BaseEntity implements Syncable{
         return this.createdAt;
     }
 
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
 
     @Override
     public OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
     }
+
+    public abstract OffsetDateTime getDeletedAt();
 
 
     protected void triggerUpdate() {

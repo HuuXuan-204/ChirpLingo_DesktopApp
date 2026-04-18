@@ -134,11 +134,6 @@ public class DatabaseManager {
         executor.execute(task);
     }
 
-    /**
-     * Gửi tác vụ ghi vào hàng đợi và CHỜ kết quả trả về.
-     * Dùng cho các thao tác write cần biết kết quả (boolean) để Service xử lý tiếp.
-     * Vẫn đảm bảo chỉ 1 luồng ghi tại một thời điểm.
-     */
     public <T> T executeWriteWithResult(Callable<T> task) {
         try {
             return executor.submit(task).get();
